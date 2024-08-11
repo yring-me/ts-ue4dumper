@@ -36,17 +36,8 @@ function DumpActor() {
     })
 }
 
-function main() {
-    Java.perform(function () {
-        // HookLibWithCallback("libUE4.so", hook_ue4);
-    });
-
-}
-
 rpc.exports = {
-    main: main,
     DumpSDK: DumpSDK,
     DumpActor: DumpActor,
-    // dumpActorName: dumpActorName
 }
 
