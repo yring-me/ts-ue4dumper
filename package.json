@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/frida-gum": "^18.7.0",
+    "frida": "^16.4.7",
+    "frida-compile": "^16.4.1",
+    "node-gyp": "^10.2.0"
+  }
+}
