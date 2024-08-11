@@ -8,7 +8,7 @@ This is a project that uses TypeScript and Frida to complete UE4dump, highly bas
 
 ### What should you do before using it
 1. Manually find the offset in libUE4.so and replace them in `index.ts`
-2. Modify CMakeList.txt to build your own so, or use the so I have compiled.`libUE4Offset_1.so` for `com.netease.race`, and `libUE4Offset_2.so` for `com.ShuiSha.FPS2` or other game that has standard offset.
+2. Modify CMakeList.txt to build your own so, or use the so in `utils/output`.  `libUE4Offset_1.so` for `com.netease.race`, and `libUE4Offset_2.so` for `com.ShuiSha.FPS2` or other game that has standard offset.
 3. push the offset-so to the phone
 
 ### How to compile & load
@@ -21,7 +21,12 @@ $ npm install
 $ adb push ./utils/output/libUE4Offset_1.so /data/local/tmp/libUE4Offset.so
 $ frida -U -f com.example.android --no-pause -l _agent.js
 ```
-
+### How to dump
+In frida terminal
+```sh
+$ rpc.exports.DumpSdk()
+$ rpc.exports DumpActor()
+```
 ### Development workflow
 
 To continuously recompile on change, keep this running in a terminal:
