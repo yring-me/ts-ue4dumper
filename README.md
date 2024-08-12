@@ -27,12 +27,20 @@ In frida terminal
 $ rpc.exports.DumpSdk()
 $ rpc.exports DumpActor()
 ```
+In terminal
+```sh
+adb pull /sdcard/dump.txt dump.txt
+```
 ### Development workflow
 
 To continuously recompile on change, keep this running in a terminal:
 
 ```sh
 $ npm run watch
+```
+To switch the Game between `com.netease.race` and `com.ShuiSha.FPS2` , in `utils/GAME.h`
+```cpp
+#define COM_NETEASE_RACE 1 // true for com.netease.race, false for com.ShuiSha.FPS2 or standard offset
 ```
 
 ### Some issues
