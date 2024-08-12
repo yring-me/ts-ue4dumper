@@ -15,7 +15,7 @@ This is a project that uses TypeScript and Frida to complete UE4dump, highly bas
 
 
 ```sh
-$ git clone git://github.com/yring-me/ts-ue4dumper.git
+$ git clone https://github.com/yring-me/ts-ue4dumper.git
 $ cd frida-agent/
 $ npm install
 $ adb push ./utils/output/libUE4Offset_1.so /data/local/tmp/libUE4Offset.so
