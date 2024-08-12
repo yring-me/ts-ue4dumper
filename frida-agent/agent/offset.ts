@@ -240,8 +240,8 @@ export var GAME_FUOBJECT_ITEM_SIZE = 0x18;
 
 /**
  * All certain properties inherit from FProperty, And we can get the pointer of the property by FFiled's ChildrenProperties,
- * so we have to cast the ChildrenProperties to a certain property by adding the sizeof(FProperty),
- * after that we can get the pointer of the class that subscribes to this certain property.
+ * once we get the pointer of the property, then we can get the certain property.
+ * By adding the size of the FProperty, depending on the certain property, we can have the pointer that describe this certain property.
  * 
  * for example
  * class FStructProperty : public FProperty
