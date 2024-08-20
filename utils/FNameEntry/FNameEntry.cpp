@@ -13,6 +13,7 @@ extern "C" int32_t get_FNameEntry_Header_Offset()
 
 extern "C" int32_t get_FNameEntry_LenBit()
 {
+
 #ifdef COM_NETEASE_RACE
     return 1;
 #endif
