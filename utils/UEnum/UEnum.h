@@ -16,7 +16,7 @@ class UEnum : public UField
 {
 public:
     FString CppType;
-    
+
 #ifdef COM_NETEASE_RACE
     char dummy[0x10];
 #endif
