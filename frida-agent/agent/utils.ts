@@ -42,10 +42,8 @@ export function getLocalPlayer(GWorld: NativePointer) {
     var owningGameInstance = GWorld.add(OFFSET.offset_GWorld_GameInstance).readPointer()
     var localPlayers = owningGameInstance.add(OFFSET.offset_GameInstance_LocalPlayers).readPointer()
     var localPlyer = localPlayers.add(0x0).readPointer()
-    var playerController = localPlyer.add(OFFSET.GAME_PALYERCONTROLLER_OFFSET).readPointer()
-
+    var playerController = localPlyer.add(OFFSET.ULocalPlayer_PlayerController_OFFSET).readPointer()
     var local_pwn = playerController.add(OFFSET.GAME_ACKNOWLEDEGED_PAWN_OFFSET).readPointer()
-    console.info(`\x1b[32m[+] local_pwn: ${local_pwn}\x1b[0m`)
     return local_pwn
 }
 
@@ -80,7 +78,7 @@ export function resolveProp_writeByteEnum(GName: NativePointer, enumObj: UEnumPo
             enumClassStr += "enum " + enumName + " {";
             for (var count = 0; count < UEnum.getCount(enumObj); count++) {
                 var index = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize).readU32();
-                var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64();
+                var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64().toString(16);
                 enumClassStr += "\n\t" + (getFNameFromID(GName, index) as string).replace(enumName + "::", "")
                 enumClassStr += " = " + value;
             }
@@ -105,7 +103,7 @@ export function resolveProp_writeEnumProperty(GName: NativePointer, prop: UEnumP
         enumClassStr += "enum " + enumName + " {";
         for (var count = 0; count < UEnum.getCount(enumObj); count++) {
             var index = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize).readU32();
-            var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64();
+            var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64().toString(16);
             enumClassStr += "\n\t" + (getFNameFromID(GName, index) as string).replace(enumName + "::", "")
             enumClassStr += " = " + value;
         }
@@ -214,7 +212,7 @@ export function writeByteProperty(GName: NativePointer, prop: FFieldPointer) {
         for (var count = 0; count < UEnum.getCount(enumObj); count++) {
             var index = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize).readU32();
 
-            var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64();
+            var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64().toString(16);
             file.write(`\t\t${(getFNameFromID(GName, index) as string).replace(enumName + "::", "")} = ${value}\n`)
         }
         file.write("\t};\n")
@@ -233,7 +231,7 @@ export function writeEnumProperty(GName: NativePointer, prop: FFieldPointer) {
     for (var count = 0; count < UEnum.getCount(enumObj); count++) {
         // console.log(UEnum.getTpairArray(enumObj));
         var index = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize).readU32();
-        var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64();
+        var value = UEnum.getTpairArray(enumObj).add(count * OFFSET.enumItemSize + OFFSET.FName_Size).readU64().toString(16);
 
         file.write(`\t\t${(getFNameFromID(GName, index) as string).replace(enumName + "::", "")} = ${value}\n`)
     }
