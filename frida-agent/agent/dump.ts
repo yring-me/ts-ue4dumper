@@ -2,7 +2,7 @@ import * as OFFSET from "./offset.js";
 import { getLocalPlayer, getUObjectBaseObjectFromId, getObjectCount, writeStruct, file, getFNameFromID } from "./utils.js"
 import { UObject } from "./struct.js";
 
-export function testOffset(pointer: NativePointer, baseOffset: number) {
+function testOffset(pointer: NativePointer, baseOffset: number) {
     for (var i = -30; i < 30; i++) {
         var ptr = pointer.add(baseOffset + i * 8).readPointer();
         if (ptr as unknown as number > 0x70000000) {
@@ -14,12 +14,10 @@ export function testOffset(pointer: NativePointer, baseOffset: number) {
 /**
  *  get all actor name
  *  */
-export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGetLocalActor: false, actorAddr: NativePointer | null) {
+export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGetLocalActor: boolean = false) {
 
     var Level = GWorld.add(OFFSET.offset_UWorld_PersistentLevel).readPointer()
     console.log("Level :", Level)
-
-    testOffset(Level, OFFSET.offset_ULevel_Actors);
 
     var Actors = Level.add(OFFSET.offset_ULevel_Actors).readPointer()
     console.log("Actors Array :", Actors)
@@ -30,40 +28,40 @@ export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGe
     var Actors_Max = Level.add(OFFSET.offset_ULevel_Actors).add(0xc).readU32()
     console.log("Actors_Max :", Actors_Max)
 
+    //get local player pawn
+    var OwningGameInstance = GWorld.add(OFFSET.offset_GWorld_GameInstance).readPointer();
+    var LocalPlayers = OwningGameInstance.add(OFFSET.offset_GameInstance_LocalPlayers).readPointer()
+    var LocalPlayer = LocalPlayers.add(0).readPointer()
+    var PlayerController = LocalPlayer.add(OFFSET.ULocalPlayer_PlayerController_OFFSET).readPointer()
+    var LocalPawn = PlayerController.add(OFFSET.GAME_ACKNOWLEDEGED_PAWN_OFFSET).readPointer()
 
     for (var index = 0; index < Actors_Num; index++) {
-        var actor = Actors.add(index * 8).readPointer()
-        if (actor == NULL) { continue; }
+        var actor = Actors.add(index * Process.pointerSize).readPointer()
+        if (actor == NULL || actor as unknown as number == 0) { continue; }
         //console.log("actor", actor)
-        //通过角色actor获取其成员变量FName
 
         var FNameEntryAllocator = GNames
-
-        var FName_Offset = 0x18
-        var FName = actor.add(FName_Offset);
+        var FName = actor.add(OFFSET.offset_UObject_NamePrivate); //Class AActor : public UObject
         var ComparisonIndex = FName.add(0).readU32()
 
-        // console.log("ComparisonIndex:", ComparisonIndex);
         var FNameBlockOffsetBits = 16
         var FNameBlockOffsets = 65536
 
         var Block = ComparisonIndex >> FNameBlockOffsetBits
         var Offset = ComparisonIndex & (FNameBlockOffsets - 1)
 
-        var Blocks_Offset = 0x40
-        var Blocks = FNameEntryAllocator.add(Blocks_Offset)
+        var Blocks = FNameEntryAllocator.add(OFFSET.offset_FNamePool_Blocks)
 
-        var FNameEntry = Blocks.add(Block * 8).readPointer().add(Offset * 2)
-        // console.log("FNameEntry:", FNameEntry)
+        var FNameEntry = Blocks.add(Block * Process.pointerSize).readPointer().add(Offset * OFFSET.FNameStride)
 
         var FNameEntryHeader = FNameEntry.readU16()
 
 
         var isWide = FNameEntryHeader & 1
-        var Len = FNameEntryHeader >> 6
+        var Len = FNameEntryHeader >> OFFSET.FNameEntry_LenBit
 
         if (0 == isWide) {
-            if (isGetLocalActor && actorAddr != null && actor.toString(16) == actorAddr.toString(16)) {
+            if (isGetLocalActor && LocalPawn != null && actor.toString(16) == LocalPawn.toString(16)) {
                 console.log(`\x1b[32m[+] found local actor ${actor}: ${FNameEntry.add(2).readCString(Len)}\x1b[0m`)
                 return;
             }
