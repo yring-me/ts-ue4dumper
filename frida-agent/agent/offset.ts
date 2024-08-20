@@ -2,6 +2,19 @@ var offset_so = Module.load('/data/local/tmp/libUE4Offset.so');
 var func: NativePointer;
 var getOffsets;
 
+// Global Offset
+func = offset_so.findExportByName("get_GNames_Offset") as NativePointer;
+getOffsets = new NativeFunction(func, 'int', []);
+export var GNames_offset = getOffsets();
+
+func = offset_so.findExportByName("get_GWorld_Offset") as NativePointer;
+getOffsets = new NativeFunction(func, 'int', []);
+export var GWorld_offset = getOffsets();
+
+func = offset_so.findExportByName("get_GUObjectArray_Offset") as NativePointer;
+getOffsets = new NativeFunction(func, 'int', []);
+export var GUObjectArray_offset = getOffsets();
+
 //UObejct
 func = offset_so.findExportByName("get_UObject_VTable_Offset") as NativePointer;
 getOffsets = new NativeFunction(func, 'int', []);
@@ -33,12 +46,6 @@ getOffsets = new NativeFunction(func, 'int', []);
 // console.log("get_UObject_ComparisonIndex_Offset", getOffsets())
 export var offset_UObject_Number = getOffsets()
 
-
-// func = offset_so.findExportByName("get_UObject_dummy_Offset") as NativePointer;
-// getOffsets = new NativeFunction(func, 'int', []);
-// // console.log("get_UObject_ComparisonIndex_Offset", getOffsets())
-// export var offset_UObject_dummy = getOffsets()
-
 func = offset_so.findExportByName("get_UObject_OuterPrivate_Offset") as NativePointer;
 getOffsets = new NativeFunction(func, 'int', []);
 // console.log("get_UObject_OuterPrivate_Offset", getOffsets().toString(16), 32);
@@ -64,7 +71,7 @@ export var offset_GameInstance_LocalPlayers = getOffsets()
 //ULocalPlayer
 func = offset_so.findExportByName("get_ULocalPlayer_PlayerController_Offset") as NativePointer;
 getOffsets = new NativeFunction(func, 'int', []);
-export var GAME_PALYERCONTROLLER_OFFSET = getOffsets();
+export var ULocalPlayer_PlayerController_OFFSET = getOffsets();
 
 //APlayerController
 export var GAME_ACKNOWLEDEGED_PAWN_OFFSET = 0x2a0
@@ -140,7 +147,7 @@ export var offset_UEnum_Max = offset_UEnum_Count + 4;
 
 func = offset_so.findExportByName("get_UEnum_Names_Size") as NativePointer;
 getOffsets = new NativeFunction(func, 'int', []);
-export var enumItemSize = getOffsets() + 8;
+export var enumItemSize = getOffsets();
 // console.log("enumItemSize: " + enumItemSize.toString(16))
 
 //Class:UFunction
