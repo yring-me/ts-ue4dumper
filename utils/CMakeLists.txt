@@ -2,10 +2,12 @@ cmake_minimum_required(VERSION 3.28)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_ANDROID_NDK "YOUR_ANDROID_NDK_PATH")
+set(CMAKE_ANDROID_NDK "C:/Users/yannickyang/AppData/Local/Android/Sdk/ndk/22.0.7026061")
 
+#编译平台
 set(CMAKE_SYSTEM_NAME Android)
 
+#编译架构
 set(CMAKE_ANDROID_ARCH_ABI arm64-v8a)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -25,8 +27,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} $ENV{MY_CXX_FLAGS} -std=c++11")
-
-# set output DIRECTORY
+#设置输出目录
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/output)
 
 project(UE4Offset)

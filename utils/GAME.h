@@ -1,5 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
-#define COM_NETEASE_RACE 1
+
+// #define COM_NETEASE_RACE
 
 #endif
