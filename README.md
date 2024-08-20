@@ -7,7 +7,7 @@ Using TypeScript and Frida to do UE4dump, highly based on project [frida-ue4dump
 - Tested on `com.netease.race` and `com.ShuiSha.FPS2`.
 
 ### What should you do before using it
-1. Manually find the offset in libUE4.so and replace them in `frida-agent/agent/index.ts`
+1. Manually find the offset in libUE4.so and replace them in `utils/GAME.cpp`
 2. Modify CMakeList.txt to build your own so, or use the so in `utils/output`.  `libUE4Offset_1.so` for `com.netease.race`, and `libUE4Offset_2.so` for `com.ShuiSha.FPS2` or other game that has standard offset.
 3. push the offset-so to the phone
 
