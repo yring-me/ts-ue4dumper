@@ -29,7 +29,7 @@ export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGe
     console.log("Actors_Max :", Actors_Max)
 
 
-    var LocalPlayer = getLocalPlayer(GWorld);
+    var LocalPawn = getLocalPlayer(GWorld);
 
     for (var index = 0; index < Actors_Num; index++) {
         var actor = Actors.add(index * Process.pointerSize).readPointer()
@@ -57,7 +57,7 @@ export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGe
         var Len = FNameEntryHeader >> OFFSET.FNameEntry_LenBit
 
         if (0 == isWide) {
-            if (isGetLocalActor && LocalPlayer != null && actor.toString(16) == LocalPlayer.toString(16)) {
+            if (isGetLocalActor && LocalPawn != null && actor.toString(16) == LocalPawn.toString(16)) {
                 console.log(`\x1b[32m[+] found local actor ${actor}: ${FNameEntry.add(2).readCString(Len)}\x1b[0m`)
                 return;
             }
@@ -79,13 +79,6 @@ export function dumpSDK(GNames: NativePointer, GUObjectArray: NativePointer, isA
             var clazz = UObject.getClass(UObjectBaseObject);
 
             var name = UObject.getName(GNames, clazz);
-
-            // console.log(name);
-            // var ue4 = Module.findBaseAddress("libUE4.so") as NativePointer;
-            // var tostring_addr = ue4.add(0x6B8F36C);
-            // var toString = new NativeFunction(tostring_addr, 'pointer', ['pointer']);
-            // var name = toString(UObjectBaseObject);
-            // file.write(`name: , ${name.readCString()}, nameid: ${getFNameFromID(GNames, index)}\n`);
 
             if (name && (!names.includes(name))) {
                 names.push(name);
