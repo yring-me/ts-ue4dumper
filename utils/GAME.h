@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-// #define COM_NETEASE_RACE
+#include <stdint.h>
+#define COM_NETEASE_RACE
 
 #endif

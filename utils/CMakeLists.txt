@@ -33,7 +33,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/output)
 project(UE4Offset)
 
 add_library(${PROJECT_NAME} SHARED
-        # main.cpp
+        GAME.cpp
         UObject/UObject.cpp
         FName/FName.cpp
         FNameEntry/FNameEntry.cpp
