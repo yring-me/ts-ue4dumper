@@ -28,12 +28,8 @@ export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGe
     var Actors_Max = Level.add(OFFSET.offset_ULevel_Actors).add(0xc).readU32()
     console.log("Actors_Max :", Actors_Max)
 
-    //get local player pawn
-    var OwningGameInstance = GWorld.add(OFFSET.offset_GWorld_GameInstance).readPointer();
-    var LocalPlayers = OwningGameInstance.add(OFFSET.offset_GameInstance_LocalPlayers).readPointer()
-    var LocalPlayer = LocalPlayers.add(0).readPointer()
-    var PlayerController = LocalPlayer.add(OFFSET.ULocalPlayer_PlayerController_OFFSET).readPointer()
-    var LocalPawn = PlayerController.add(OFFSET.GAME_ACKNOWLEDEGED_PAWN_OFFSET).readPointer()
+
+    var LocalPlayer = getLocalPlayer(GWorld);
 
     for (var index = 0; index < Actors_Num; index++) {
         var actor = Actors.add(index * Process.pointerSize).readPointer()
@@ -61,7 +57,7 @@ export function dumpActorName(GWorld: NativePointer, GNames: NativePointer, isGe
         var Len = FNameEntryHeader >> OFFSET.FNameEntry_LenBit
 
         if (0 == isWide) {
-            if (isGetLocalActor && LocalPawn != null && actor.toString(16) == LocalPawn.toString(16)) {
+            if (isGetLocalActor && LocalPlayer != null && actor.toString(16) == LocalPlayer.toString(16)) {
                 console.log(`\x1b[32m[+] found local actor ${actor}: ${FNameEntry.add(2).readCString(Len)}\x1b[0m`)
                 return;
             }
