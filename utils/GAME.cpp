@@ -8,7 +8,7 @@ uint64_t GNames_offset = 0x15D458C0;
 uint64_t GWorld_offset = 0x15F1CE60;
 uint64_t GUObjectArray_offset = 0x15DA0788;
 
-#elif
+#else
 // com.ShuiSha.FPS2
 uint64_t GNames_offset = 0xAE7B500;
 uint64_t GWorld_offset = 0xB036900;
